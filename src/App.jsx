@@ -3,11 +3,14 @@ import Add from "./components/Add";
 import { ForAdd } from "./components/Button";
 import { SecondDiv } from "./components/Divs";
 import { IndexContext } from "./Index";
+import UseWebSocket from "./components/UseWebSocket";
 export const JsonContext = createContext();
 
 const App = () => {
   const [tasks, setTasks] = useState([]);
   const { userName, id } = useContext(IndexContext);
+  UseWebSocket("ws://localhost:8080");
+  
   useEffect(() => {
     console.log(id);
 
