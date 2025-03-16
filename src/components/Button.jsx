@@ -98,8 +98,6 @@ export const ForAddDB = ({ task }) => {
     };
 
     return (
-        <div>
-            <button onClick={addDBTask} className="bg-amber-500 p-1">AddTASK</button>
-        </div>
+        <button onClick={addDBTask} className="bg-amber-500 p-1">AddTASK</button>
     );
 };

@@ -1,12 +1,14 @@
+//必要なモジュールインポート
 import React, { createContext, useContext, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import App from "./App";
-
+//contextをエクスポート　
 export const IndexContext = createContext();
 export const IdContext = createContext();
+
+//ログインもしくは新規登録を選択
 const Chose = () => {
     const navigate = useNavigate();
-
     const to_register = () => {
         navigate("/register");
     };
@@ -23,15 +25,18 @@ const Chose = () => {
     );
 };
 
+//新規登録画面　APIサーバーにユーザーがすでにいるか確認をとる
 const Register = () => {
     const navigate = useNavigate();
     const { userName, setUserName } = useContext(IndexContext);
     const {id, setId} = useContext(IndexContext);
+
     async function SendRegister() {
         if (!userName.trim()) {
             alert("名前を入力してください");
             return;
         }
+
         try {
             const response = await fetch("http://localhost:4000/register",
                 {
@@ -45,13 +50,12 @@ const Register = () => {
             );
 
             const data = await response.json();
-           
-            
             if (response.status === 409) {
                 alert("そのユーザーはすでにそんざいしています。");
                 setUserName("");
                 return;
             }
+
             if (response.ok) {
                 navigate("/home");
                 setId(data.id);
@@ -62,6 +66,7 @@ const Register = () => {
 
         }
     }
+
     return (
         <div>
             <h1>新規登録ページ</h1>
@@ -78,6 +83,7 @@ const Register = () => {
     );
 };
 
+//ログイン　ユーザーネームが正しいか確認
 const Login = () => {
     const navigate = useNavigate();
     const { userName, setUserName ,setId} = useContext(IndexContext);
@@ -87,6 +93,7 @@ const Login = () => {
             alert("名前を入力してください");
             return;
         }
+
         try{
             console.log(userName);
             const response = await fetch("http://localhost:4000/login",
@@ -96,9 +103,8 @@ const Login = () => {
                         "x-custom-username":encodeURIComponent(userName)
                     }                   
                 });
-            
-            const data = await response.json();           
 
+            const data = await response.json();           
             if(response.ok){
                 navigate("/home");
                 setId(data.userid);
@@ -124,9 +130,11 @@ const Login = () => {
     );
 };
 
+//Routeごとにページを変える
 const Index = () => {
     const [userName, setUserName] = useState("");
     const [id, setId] = useState(-1);
+
     return (
         <IndexContext.Provider value={{ userName, setUserName, id, setId}}>
             <Router>

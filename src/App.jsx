@@ -1,11 +1,14 @@
+//必要なモジュールをインポート
 import React, { useState, createContext, useEffect, useContext } from 'react';
 import Add from "./components/Add";
 import { ForAdd } from "./components/Button";
 import { SecondDiv } from "./components/Divs";
 import { IndexContext } from "./Index";
 import UseWebSocket from "./components/UseWebSocket";
+
 export const JsonContext = createContext();
 
+//APIサーバーからユーザーIDをもとに情報を貰う
 const App = () => {
   const [tasks, setTasks] = useState([]);
   const { userName, id } = useContext(IndexContext);
@@ -22,14 +25,14 @@ const App = () => {
         });
 
         if (!response.ok || !response) {
-          throw new Error(`HTTP error:{response.status}`);
+          throw new Error(`HTTP error:${response.status}`);
         }
 
         const data = await response.json();
         setTasks(data);
         console.log("response from server", data);
       } catch (error) {
-        console.error(" An error occurrced while sending the request");
+        console.error(" An error occurrced while sending GET request");
       }
     };
 
@@ -41,9 +44,6 @@ const App = () => {
       <SecondDiv />
       <JsonContext.Provider value={{ tasks, setTasks}}>
         <ForAdd />
-        {/* {jsons.map((json) => (
-          <ForAddJson key={json.id} task={json} />
-        ))}; */}
         {tasks.map((task) => (
           <Add key={task.id} task={task} />
         ))}

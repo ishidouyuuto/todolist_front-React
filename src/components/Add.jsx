@@ -3,6 +3,8 @@ import DateTimePicker from "./DateTimePicker";
 import { InputTasks, InputCheck } from "./Input";
 import { ForDelete,ForAddDB} from "./Button";
 export const AddContext = createContext();
+
+//ここで各要素をコンポーネントに渡している
 const Add = ({task}) => {
   const [dateTime, setDateTime] = useState("");
   return (
@@ -13,9 +15,9 @@ const Add = ({task}) => {
           <InputCheck task={task}/>
         </div>
         <AddContext.Provider value={{dateTime, setDateTime}}>
-          <DateTimePicker task={task}/>
-          <ForDelete task={task}/>
-          <ForAddDB task={task}/>
+          <DateTimePicker task={task} />
+          <ForDelete task={task} />
+          <ForAddDB task={task} />
         </AddContext.Provider>
       </div>
     </div>
